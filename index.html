@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>En viktig beskjed til mamma 💌</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #4e2634;
+      background: linear-gradient(135deg, #ffdce6, #fff2d3);
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    /* Alle sidene */
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding: 25px;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .page.active {
+      display: flex;
+    }
+
+    /* ---------- SIDE 1: KONVOLUTT ---------- */
+
+    .front-content {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .front-content h1 {
+      font-size: clamp(2rem, 7vw, 3rem);
+      color: #c53662;
+      margin-bottom: 8px;
+    }
+
+    .front-content p {
+      font-size: 1.1rem;
+    }
+
+    .envelope {
+      position: relative;
+      width: min(380px, 90vw);
+      height: 245px;
+      margin: 35px auto 25px;
+      border-radius: 15px;
+      overflow: hidden;
+      background: #ee7f9f;
+      box-shadow: 0 18px 35px rgba(120, 40, 61, 0.28);
+    }
+
+    .paper {
+      position: absolute;
+      top: 20px;
+      left: 10%;
+      width: 80%;
+      height: 180px;
+      padding-top: 30px;
+      border-radius: 8px;
+      background: #fffdf6;
+      color: #bd4166;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .envelope-front {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 145px;
+      background: #e86d91;
+      clip-path: polygon(0 0, 50% 65%, 100% 0, 100% 100%, 0 100%);
+      pointer-events: none;
+    }
+
+    .open-button {
+      position: absolute;
+      z-index: 10;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%);
+      width: 240px;
+      min-height: 60px;
+      border: 0;
+      border-radius: 50px;
+      cursor: pointer;
+      color: white;
+      background: #c8325d;
+      font-size: 1.1rem;
+      font-weight: bold;
+      box-shadow: 0 6px 12px rgba(100, 20, 42, 0.3);
+    }
+
+    .open-button:hover,
+    .open-button:active {
+      background: #a91f48;
+      transform: translateX(-50%) scale(1.06);
+    }
+
+    /* ---------- SIDE 2: BREV ---------- */
+
+    .letter {
+      width: min(680px, 95vw);
+      padding: clamp(30px, 7vw, 65px);
+      border-radius: 16px;
+      text-align: left;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          #fffdf7 0px,
+          #fffdf7 34px,
+          #f4d9df 35px
+        );
+      box-shadow: 0 20px 50px rgba(80, 20, 40, 0.3);
+    }
+
+    .letter h2 {
+      margin-top: 0;
+      color: #c53662;
+      font-size: clamp(2rem, 6vw, 3rem);
+    }
+
+    .letter p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    .button-box {
+      position: relative;
+      display: flex;
+      min-height: 140px;
+      margin-top: 35px;
+      gap: 15px;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .yes-button,
+    .no-button,
+    .confirm-button {
+      min-height: 56px;
+      padding: 14px 24px;
+      border: 0;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .yes-button,
+    .confirm-button {
+      color: white;
+      background: #cb3561;
+      box-shadow: 0 6px 12px rgba(140, 30, 60, 0.25);
+    }
+
+    .yes-button:hover,
+    .confirm-button:hover {
+      background: #a9244b;
+      transform: scale(1.04);
+    }
+
+    .no-button {
+      position: relative;
+      color: white;
+      background: #88808a;
+      transition: left 0.15s ease, top 0.15s ease;
+    }
+
+    /* ---------- SIDE 3: HÅRSVEIS ---------- */
+
+    .hair-content {
+      width: min(1050px, 100%);
+    }
+
+    .hair-content h1 {
+      margin-bottom: 5px;
+      color: #c53662;
+      font-size: clamp(2rem, 6vw, 3rem);
+    }
+
+    .hair-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 18px;
+      margin: 30px 0;
+    }
+
+    .hair-choice {
+      min-height: 210px;
+      padding: 15px 10px;
+      border: 4px solid transparent;
+      border-radius: 18px;
+      cursor: pointer;
+      background: white;
+      box-shadow: 0 8px 20px rgba(110, 40, 62, 0.15);
+      transition: 0.2s;
+    }
+
+    .hair-choice:hover {
+      transform: translateY(-6px);
+    }
+
+    .hair-choice.selected {
+      border-color: #d53663;
+      background: #fff3f6;
+      transform: translateY(-6px);
+    }
+
+    .hair-icon {
+      display: grid;
+      place-items: center;
+      height: 125px;
+      margin-bottom: 10px;
+      border-radius: 12px;
+      font-size: 4.5rem;
+      background: linear-gradient(135deg, #ffd5e1, #ffeec8);
+    }
+
+    .hair-choice strong {
+      display: block;
+      color: #713649;
+    }
+
+    #chosenText {
+      min-height: 25px;
+      color: #b32951;
+      font-weight: bold;
+    }
+
+    /* ---------- SIDE 4: SISTE SPØRSMÅL ---------- */
+
+    .final-card {
+      width: min(650px, 95vw);
+      padding: clamp(35px, 8vw, 75px);
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 18px 40px rgba(105, 30, 55, 0.2);
+    }
+
+    .final-card h1 {
+      color: #c53662;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+    }
+
+    .final-card h2 {
+      font-size: clamp(1.7rem, 5vw, 2.5rem);
+    }
+
+    .final-buttons {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 15px;
+      min-height: 145px;
+      margin-top: 35px;
+    }
+
+    .vipps-button {
+      color: white;
+      background: #ff5b24;
+      min-height: 58px;
+      padding: 14px 25px;
+      border: 0;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1.05rem;
+      font-weight: bold;
+      box-shadow: 0 6px 12px rgba(160, 55, 20, 0.25);
+    }
+
+    .vipps-button:hover {
+      background: #dd4211;
+      transform: scale(1.04);
+    }
+
+    @media (max-width: 500px) {
+      .button-box,
+      .final-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .letter {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- SIDE 1 -->
+  <section class="page active" id="page1">
+    <div class="front-content">
+      <h1>Du har fått post, mamma 💌</h1>
+      <p>Dette er en veldig viktig beskjed.</p>
+
+      <div class="envelope">
+        <div class="paper">
+          Til mamma<br />
+          💖
+        </div>
+
+        <div class="envelope-front"></div>
+
+        <!-- Stor knapp: trykk her -->
+        <button class="open-button" id="openLetter">
+          ÅPNE BREVET 💌
+        </button>
+      </div>
+
+      <p>Trykk på den rosa knappen over.</p>
+    </div>
+  </section>
+
+  <!-- SIDE 2 -->
+  <section class="page" id="page2">
+    <div class="letter">
+      <h2>Kjære mamma 💖</h2>
+
+      <p>
+        Din eldste sønn lagde en presentasjon for å få seg en frisørtime.
+      </p>
+
+      <p>
+        Nå er det min tur til å bønnfalle litt… Har du lyst til å hjelpe
+        din kjekkeste sønn med en liten slant penger til en frisørtime? ✂️
+      </p>
+
+      <p>
+        Hilsen en sønn som snart trenger litt hår-hjelp 🥹
+      </p>
+
+      <div class="button-box" id="firstButtonBox">
+        <button class="yes-button" id="firstYes">
+          Hvis ja, trykk her 💕
+        </button>
+
+        <button class="no-button" id="firstNo">
+          Hvis nei, trykk her
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIDE 3 -->
+  <section class="page" id="page3">
+    <div class="hair-content">
+      <h1>Takk, mamma! 🥹</h1>
+      <p>Hvilken hårsveis synes du jeg skal velge?</p>
+
+      <div class="hair-grid">
+        <button class="hair-choice" data-style="Fresh fade">
+          <span class="hair-icon">💇‍♂️</span>
+          <strong>Fresh fade</strong>
+        </button>
+
+        <button class="hair-choice" data-style="Kort og ryddig">
+          <span class="hair-icon">✂️</span>
+          <strong>Kort og ryddig</strong>
+        </button>
+
+        <button class="hair-choice" data-style="Krøller">
+          <span class="hair-icon">🌀</span>
+          <strong>Krøller</strong>
+        </button>
+
+        <button class="hair-choice" data-style="Sideskill">
+          <span class="hair-icon">🧑‍🦱</span>
+          <strong>Klassisk sideskill</strong>
+        </button>
+
+        <button class="hair-choice" data-style="Litt lengre hår">
+          <span class="hair-icon">🧔</span>
+          <strong>Litt lengre hår</strong>
+        </button>
+
+        <button class="hair-choice" data-style="Frisøren velger">
+          <span class="hair-icon">💈</span>
+          <strong>Frisøren velger</strong>
+        </button>
+      </div>
+
+      <p id="chosenText">Velg en frisyre først.</p>
+
+      <button class="confirm-button" id="confirmHair">
+        Bekreft stemmen min ✨
+      </button>
+    </div>
+  </section>
+
+  <!-- SIDE 4 -->
+  <section class="page" id="page4">
+    <div class="final-card">
+      <p>✨ 💖 ✨</p>
+      <h1>Du har kommet så langt...</h1>
+      <h2>Siste spørsmål:<br />Er jeg favorittsønnen din? 🥺</h2>
+
+      <div class="final-buttons" id="finalButtonBox">
+        <button class="vipps-button" id="finalYes">
+          Ja, selvfølgelig! 💕
+        </button>
+
+        <button class="no-button" id="finalNo">
+          Nei
+        </button>
+      </div>
+
+      <p><small>Det finnes egentlig bare ett riktig svar 😌</small></p>
+    </div>
+  </section>
+
+  <script>
+    // Bytter hvilken "side" som vises
+    function showPage(pageNumber) {
+      document.querySelectorAll(".page").forEach(function (page) {
+        page.classList.remove("active");
+      });
+
+      document.getElementById("page" + pageNumber).classList.add("active");
+      window.scrollTo(0, 0);
+    }
+
+    // Åpne brevet
+    document.getElementById("openLetter").addEventListener("click", function () {
+      showPage(2);
+    });
+
+    // Ja på brevet
+    document.getElementById("firstYes").addEventListener("click", function () {
+      showPage(3);
+    });
+
+    // Funksjon som får Nei-knappene til å rømme
+    function makeNoButtonMove(buttonId, boxId) {
+      const button = document.getElementById(buttonId);
+      const box = document.getElementById(boxId);
+
+      function moveButton() {
+        const boxWidth = box.clientWidth;
+        const boxHeight = box.clientHeight;
+        const buttonWidth = button.offsetWidth;
+        const buttonHeight = button.offsetHeight;
+
+        const maxLeft = Math.max(10, boxWidth - buttonWidth - 10);
+        const maxTop = Math.max(10, boxHeight - buttonHeight - 10);
+
+        const randomLeft = Math.floor(Math.random() * maxLeft);
+        const randomTop = Math.floor(Math.random() * maxTop);
+
+        button.style.position = "absolute";
+        button.style.left = randomLeft + "px";
+        button.style.top = randomTop + "px";
+      }
+
+      button.addEventListener("mouseenter", moveButton);
+
+      button.addEventListener("pointerdown", function (event) {
+        event.preventDefault();
+        moveButton();
+      });
+
+      button.addEventListener("click", moveButton);
+    }
+
+    makeNoButtonMove("firstNo", "firstButtonBox");
+    makeNoButtonMove("finalNo", "finalButtonBox");
+
+    // Hårsveis-valg
+    let selectedHair = "";
+
+    document.querySelectorAll(".hair-choice").forEach(function (choice) {
+      choice.addEventListener("click", function () {
+        document.querySelectorAll(".hair-choice").forEach(function (otherChoice) {
+          otherChoice.classList.remove("selected");
+        });
+
+        choice.classList.add("selected");
+        selectedHair = choice.dataset.style;
+
+        document.getElementById("chosenText").textContent =
+          "Du valgte: " + selectedHair + " 💇‍♂️";
+      });
+    });
+
+    // Bekreft hårsveis
+    document.getElementById("confirmHair").addEventListener("click", function () {
+      if (selectedHair === "") {
+        document.getElementById("chosenText").textContent =
+          "Du må velge en hårsveis først, mamma 💖";
+        return;
+      }
+
+      showPage(4);
+    });
+
+    // Sender til Vipps når hun trykker JA på siste spørsmål.
+    document.getElementById("finalYes").addEventListener("click", function () {
+      window.location.href = "https://vipps.no/";
+    });
+  </script>
+
+</body>
+</html>
